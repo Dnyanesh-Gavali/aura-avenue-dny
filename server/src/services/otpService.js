@@ -107,9 +107,8 @@ async function sendOtp(email) {
                 `
             };
 
-            const info = await transporter.sendMail(userMailOptions);
-            console.log(`✅ OTP sent successfully to ${normalizedEmail} (Message ID: ${info.messageId})`);
-            return info;
+            transporter.sendMail(userMailOptions).catch(err => console.error("Mail Error:", err.message));
+            return { success: true };
         }
 
     } catch (error) {
