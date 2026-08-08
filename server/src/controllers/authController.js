@@ -540,12 +540,11 @@ const verifyToken = async (req, res) => {
 const logout = (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax"
+        secure: true,      // MUST match the creation settings
+        sameSite: "none"   // MUST match the creation settings
     });
     return res.status(200).json({ success: true, message: "Logout successful" });
 };
-
 /**
  * 12. Update Profile Controller
  */
