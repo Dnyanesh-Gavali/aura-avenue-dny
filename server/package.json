@@ -1,0 +1,35 @@
+{
+  "dependencies": {
+    "@google/genai": "^2.13.0",
+    "axios": "^1.18.1",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "google-auth-library": "^11.0.0",
+    "jsonwebtoken": "^9.0.3",
+    "leaflet": "^1.9.4",
+    "mongodb": "^7.5.0",
+    "mongoose": "^9.7.4",
+    "nodemailer": "^9.0.3",
+    "react-leaflet": "^5.0.0"
+  },
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Backend for the Travel & Tourism application.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "seed": "node src/seed/seedPackages.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
