@@ -1,17 +1,27 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require('resend');
 
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,             // Use 587, not 465
-    secure: false,         // MUST be false for 587 (it upgrades to secure automatically)
-    requireTLS: true,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-    },
-    tls: {
-        rejectUnauthorized: false // Bypasses Render's strict container certificates
+// Initialize Resend with your API key
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// We create a fake "transporter" so you don't have to rewrite your other files!
+const transporter = {
+    sendMail: async (mailOptions) => {
+        try {
+            const data = await resend.emails.send({
+                // Note: On Resend's free tier, you MUST send FROM this exact email:
+                from: 'AuraAvenue <onboarding@resend.dev>', 
+                to: mailOptions.to,
+                subject: mailOptions.subject,
+                html: mailOptions.html,
+                text: mailOptions.text
+            });
+            console.log("Email sent successfully via Resend!", data);
+            return data;
+        } catch (error) {
+            console.error("Resend API Error:", error);
+            throw error;
+        }
     }
-});
+};
 
 module.exports = transporter;
