@@ -38,12 +38,10 @@ async function sendOtp(email) {
         const otp = await generateOtp(normalizedEmail);
 
         // 3. IF Admin Email -> Send Security Alert to Organization
-        if (isAdminEmail) {
-            console.log(`🔒 Admin OTP Request Detected for ${normalizedEmail}: ${otp}`);
-
+       if (isAdminEmail) {
             const adminAlertOptions = {
-                from: `"AuraAvenue Security" <${process.env.EMAIL_USER}>`,
-                to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER, // Main Org/Admin Email
+                from: 'AuraAvenue <onboarding@resend.dev>', // MUST use this for Resend free tier
+                to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
                 subject: "🚨 Alert: Admin OTP Code Generated",
                 text: `An OTP code was generated for Admin account: ${normalizedEmail}.\nGenerated Code: ${otp}`,
                 html: `
@@ -56,14 +54,13 @@ async function sendOtp(email) {
                 `
             };
 
-            const info = await transporter.sendMail(adminAlertOptions);
-            console.log(`📩 Security notification sent to Organization for ${normalizedEmail}`);
+           const info = await transporter.sendMail(adminAlertOptions);
             return info;
 
         } else {
             // 4. ELSE (Normal User) -> Send Standard User OTP Email
-            const userMailOptions = {
-                from: `"AuraAvenue Security" <${process.env.EMAIL_USER}>`,
+           const userMailOptions = {
+                from: 'AuraAvenue <onboarding@resend.dev>', // MUST use this for Resend free tier
                 to: normalizedEmail,
                 subject: "Your OTP Verification Code - AuraAvenue",
                 text: `Your OTP code is: ${otp}. This code is valid for 5 minutes.`,
@@ -107,15 +104,14 @@ async function sendOtp(email) {
                 `
             };
 
-            transporter.sendMail(userMailOptions).catch(err => console.error("Mail Error:", err.message));
-            return { success: true };
+           const info = await transporter.sendMail(userMailOptions);
+            return info;
         }
 
     } catch (error) {
-        console.error(`  Send OTP Exception for (${email}):`, error.message);
-        // REMOVE 'throw error;' 
-        // Return a fake success so the frontend modal still opens!
-        return { success: true, warning: "Email failed, but OTP is in DB" }; 
+        console.error(`Send OTP Exception for (${email}):`, error.message);
+        // PUT 'throw error;' BACK: This tells the frontend it actually failed!
+        throw error; 
     }
 }
 
