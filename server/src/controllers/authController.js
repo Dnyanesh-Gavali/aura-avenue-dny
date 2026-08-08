@@ -24,13 +24,12 @@ const sendAuthCookie = (res, userPayload) => {
     
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        maxAge: 3600000 // 1 hour
+        secure: true,      // MUST be true for cross-origin
+        sameSite: "none",  // MUST be "none" for Vercel -> Render communication
+        maxAge: 3600000 
     });
     return token;
 };
-
 const getEmailFromToken = (req) => {
     const token = req.cookies.token;
     if (!token) return null;
