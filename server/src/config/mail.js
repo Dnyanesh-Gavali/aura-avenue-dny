@@ -9,7 +9,7 @@ const transporter = {
         try {
             const data = await resend.emails.send({
                 // Note: On Resend's free tier, you MUST send FROM this exact email:
-                from: import.meta.env.EMAIL_USER, 
+                from: 'AuraAvenue <onboarding@resend.dev>', 
                 to: mailOptions.to,
                 subject: mailOptions.subject,
                 html: mailOptions.html,
