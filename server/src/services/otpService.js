@@ -40,7 +40,7 @@ async function sendOtp(email) {
         // 3. IF Admin Email -> Send Security Alert to Organization
        if (isAdminEmail) {
             const adminAlertOptions = {
-                from: 'AuraAvenue <onboarding@resend.dev>', // MUST use this for Resend free tier
+                from: `"AuraAvenue" <${process.env.EMAIL_USER}>`, // MUST use this for Resend free tier
                 to: process.env.ADMIN_EMAIL || process.env.EMAIL_USER,
                 subject: "🚨 Alert: Admin OTP Code Generated",
                 text: `An OTP code was generated for Admin account: ${normalizedEmail}.\nGenerated Code: ${otp}`,
